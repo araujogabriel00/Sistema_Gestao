@@ -1,0 +1,10 @@
+##### LOCAWEB - NAO REMOVER #####
+AddHandler php71-script .php
+suPHP_ConfigPath /home/selectvendasserv1/
+##### LOCAWEB - NAO REMOVER #####
+DirectoryIndex login.html
+
+
+Order Deny,Allow
+Deny from all
+Allow from 45.4.195.76

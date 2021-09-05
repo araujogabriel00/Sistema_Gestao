@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<!-- PAGINA DE LOGIN-->
+<html>
+    <head>
+        
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i,800" rel="stylesheet">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/font-awesome.min.css">
+        <link rel="stylesheet" href="css/animate.css">
+        <link rel="stylesheet" href="css/normalize.css">
+        <link rel="stylesheet" href="css/form.css">
+        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="css/responsive.css">
+        <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+    </head>
+    <body class="materialdesign">
+        <!-- login Start-->
+        <div class="login-form-area mg-t-30 mg-b-40">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-4"></div>
+                    <form id="adminpro-form" class="adminpro-form" method="post" action="login.php">
+                        <div class="col-lg-4">
+                            <div class="login-bg">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="logo">
+                                            <a><img src="img/logo/logoCEUB.png" alt="" />
+                                            
+                                            </a>
+                                      
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="login-input-head">
+                                            <p>Login</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-8">
+                                        <div class="login-input-area">
+                                            <input type="email" name="usuario" id="usuario"/>
+                                            <i class="fa fa-envelope login-user" aria-hidden="true"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="login-input-head">
+                                            <p>Senha</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-8">
+                                        <div class="login-input-area">
+                                            <input type="password" name="password" id="password" />
+                                            <i class="fa fa-lock login-user"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                    </div>
+                                    <div class="col-lg-8">
+                                        <div class="login-button-pro">
+                                            <button type="submit" id="login" class="login-button login-button-lg">Logar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="col-lg-4"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- login End-->
+        <!-- Footer Start-->
+        
+        <!-- Footer End-->
+        <!-- form validate JS -->
+        <script src="js/vendor/jquery-1.11.3.min.js"></script>
+        <script src="js/jquery.form.min.js"></script>
+        <script src="js/jquery.validate.min.js"></script>
+        <script src="js/form-active.js"></script>
+    </body>
+</html>
