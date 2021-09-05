@@ -63,8 +63,8 @@ foreach ($users as $u) {
             <div class="sidebar-header">
                 <a href="index.php"><?php echo '<img src="' . $imgMenu . '" alt=""/' ?></a>
                 <h3 class="admin-name"><?php echo $nomeMenu ?></h3>
-                <p><?php echo $tipoMenu ?></p>
-                <strong><?php echo $abreviacaoMenu ?>+</strong>
+                <p><?php echo  strtoupper($tipoMenu) ?></p>
+                <strong><?php echo $abreviacaoMenu ?></strong>
             </div>
             <div class="left-custom-menu-adp-wrap">
                 <ul class="nav navbar-nav left-sidebar-menu-pro">

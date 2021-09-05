@@ -20,11 +20,7 @@ if (time() >= $_SESSION['logout_time']) {
     header("location:logout.php");
 }
 
-
-
 include './menu.php';
-
-
 
 
 //VARIAVEIS DE SESSAO
@@ -46,6 +42,8 @@ $id_user = $_SESSION['user_id'];
 
 //CHAMADA DE FUNÇÃO QUE IRÁ RETORNA OS USUARIOS DO BANCO DE DADOS
 $usuarios = retornaUsuarios();
+
+$pontos_marcados = pontoMarcados($id_user);
 
 
 ?>
@@ -93,6 +91,7 @@ $usuarios = retornaUsuarios();
 
                             <div>
                                 <span id='data'> </span>
+
                             </div>
 
 
@@ -100,14 +99,51 @@ $usuarios = retornaUsuarios();
                                 <button type="submit" class="btn btn-primary" id="botaoponto">Marcar ponto</button>
                             </div>
                             <br>
-                            <div>
-                                <a href="#">Ver historico</a>
-                            </div>
+
 
                         </div>
                     </div>
-                </div>
 
+
+                    <div class="col-lg-12">
+                        <br>
+                        <div class="sparkline12-hd">
+                            <div class="main-sparkline12-hd">
+                                <h1>Marcações Realizadas</h1>
+                                <div class="sparkline12-outline-icon">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sparkline12-graph">
+                            <div class="static-table-list">
+                                <table class="table sparkle-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Dia</th>
+                                            <th>Hora</th>
+
+                                        </tr>
+                                    </thead>
+                                    <?php
+                                    //LER OS DADOS PRESENTES NO BANCO DE DADOS
+                                    foreach ($pontos_marcados as $ponto) {
+                                        echo '
+                                <tr>
+                                <td>' . $ponto->dia . '</td>
+                                <td>' . $ponto->hora . '</td>
+                                
+
+                              </tr>   
+                                    
+                                ';
+                                    }
+
+                                    ?>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <br>
             </div>
         </div>

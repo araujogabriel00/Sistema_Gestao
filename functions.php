@@ -91,7 +91,28 @@ function registrarUsuario($nomeCompleto, $semestre, $registroAcademico, $email, 
     $stmt->execute();
 }
 
+function marcacaoPonto($id, $hora)
+{
+    $PDO = db_connect();
+    $sql = "INSERT INTO marcacao_ponto (id_user, dia, hora) VALUES (:id, now(), :hora)";
+    $stmt = $PDO->prepare($sql);
+    $stmt->bindValue(':id', $id);
+    $stmt->bindValue(':hora', $hora);
+    $stmt->execute();
+}
 
+function pontoMarcados($id)
+{
+    $PDO = db_connect();
+    $sql = "SELECT dia, hora FROM sistema.marcacao_ponto WHERE id_user = :id ";
+    $stmt = $PDO->prepare($sql);
+    $stmt->bindValue(':id', $id);
+    $stmt->execute();
+    $pontos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $dadosCodificados = json_encode($pontos);
+    $objData = json_decode($dadosCodificados);
+    return $objData;
+}
 
 // function que define o horario de funcionamento do sistema
 function podeEntrar($nivel)

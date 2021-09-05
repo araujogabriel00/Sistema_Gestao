@@ -62,7 +62,7 @@ $('#botaoponto').click(function () {
                 title: 'Ponto cadastrado',
                 msg: mostrarHora(),
             });
-            window.location.href = "cadastraPonto.php";
+           
         },
         error: function (request, status, erro) {
             alert("Problema ocorrido: " + status + "\nDescição: " + erro);
