@@ -69,13 +69,15 @@ foreach ($users as $u) {
             <div class="left-custom-menu-adp-wrap">
                 <ul class="nav navbar-nav left-sidebar-menu-pro">
                     <li class="nav-item">
-                        <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle"><span><strong></span></a>
 
-                    </li>
-                    <!-- Itens menu vertical -->
-                    <li class="nav-item">
-                       
 
+                        <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle"><i class="fa fa-search">
+                            </i> <span class="mini-dn">Ações</span> <span class="indicator-right-menu mini-dn"><i class="fa indicator-mn fa-angle-left"></i></span></a>
+                        <div role="menu" class="dropdown-menu left-menu-dropdown animated flipInX">
+                            <a href="listaFucionarios.php" class="dropdown-item">Gestão Ponto</a>
+                            <a href="marcacaoponto.php" class="dropdown-item">Marcação Ponto</a>
+
+                        </div>
                     </li>
 
                 </ul>

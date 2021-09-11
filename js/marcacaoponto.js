@@ -1,3 +1,4 @@
+///RESPOSAVEL POR MOSTRAR
 function mostrarHora() {
 
     let dia = new Date();
@@ -49,7 +50,7 @@ function addZero(time) {
 mostrarHora()
 setInterval(mostrarHora, 1000);
 
-
+//ENVIA INFORMAÇÕES DO PONTO PARA cadastraPonto.php POR MEIO DE POST
 $('#botaoponto').click(function () {
     let hora = mostrarHora();
     $.ajax({
@@ -62,7 +63,7 @@ $('#botaoponto').click(function () {
                 title: 'Ponto cadastrado',
                 msg: mostrarHora(),
             });
-           
+
         },
         error: function (request, status, erro) {
             alert("Problema ocorrido: " + status + "\nDescição: " + erro);
@@ -72,3 +73,24 @@ $('#botaoponto').click(function () {
     });
     return false;
 });
+
+//Envia o id do user para a pagina de gestão para carregar as info de pontos do funcionarios
+
+
+
+
+$('#dados_tabela').load(function () {
+
+    alert(dsfasdfsa)
+
+}
+
+);
+
+
+
+
+
+
+
+

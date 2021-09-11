@@ -141,3 +141,64 @@ function retornaUsuarios()
     $objData = json_decode($dadosCodificados);
     return $objData;
 }
+
+function retonaPontoPorId($id_user)
+{
+    $PDO = db_connect();
+    $sql = "SELECT dia, hora FROM marcacao_ponto where id_user =  :id_user";
+    $stmt = $PDO->prepare($sql);
+    $stmt->bindValue(':id_user', $id_user);
+    $stmt->execute();
+    $user = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $dadosCodificados = json_encode($user);
+    $objData = json_decode($dadosCodificados);
+    return $objData;
+}
+
+
+function retonaInfoFuncionarioPorId($id_user)
+{
+    $PDO = db_connect();
+    $sql = "SELECT usuario, RA, semestre, nome_completo, img, tipo FROM users where id = :id_user";
+    $stmt = $PDO->prepare($sql);
+    $stmt->bindValue(':id_user', $id_user);
+    $stmt->execute();
+    $user = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $dadosCodificados = json_encode($user);
+    $objData = json_decode($dadosCodificados);
+    return $objData;
+}
+function retonaInfoFuncionarioPorIdTEste($id_user)
+{
+    $limit_linhas_por_pagina = 3;
+    $PDO = db_connect();
+    $sql = "SELECT dia, hora FROM marcacao_ponto where id_user = :id_user";
+    $stmt = $PDO->prepare($sql);
+    $stmt->bindValue(':id_user', $id_user);
+    $stmt->execute();
+    $resul_consulta = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $dadosCodificados = json_encode($resul_consulta);
+    $objData = json_decode($dadosCodificados);
+    $total_de_linhas = $stmt->rowCount();
+    $total_de_linhas_por_pagina = ceil($total_de_linhas / $limit_linhas_por_pagina);
+
+    if (!isset($_GET['page'])) {
+        $page = 1;
+    } else {
+        $page = $_GET['page'];
+    }
+
+    $start = ($page - 1) *  $limit_linhas_por_pagina;
+
+    $sql1 = "SELECT id, dia, hora FROM marcacao_ponto where id_user = 171 ORDER BY id DESC LIMIT $start, $limit_linhas_por_pagina";
+    $stmt1 = $PDO->prepare($sql1);
+    $stmt1->bindValue(':id_user', $id_user);
+    $stmt1->execute();
+    $resul_consulta1 =  $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $dadosCodificados1 = json_encode($resul_consulta1);
+    $objData1 = json_decode($dadosCodificados1);
+    $no = $page > 1 ? $start + 1 : 1;
+    
+    
+    return array($objData, $objData1, $total_de_linhas, $total_de_linhas_por_pagina, $resul_consulta1, $no, $page);
+}

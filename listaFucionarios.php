@@ -43,7 +43,6 @@ $img = $_SESSION['img'];
 $id_user = $_SESSION['user_id'];
 
 
-
 //CHAMADA DE FUNÇÃO QUE IRÁ RETORNA OS USUARIOS DO BANCO DE DADOS
 $usuarios = retornaUsuarios();
 
@@ -104,7 +103,10 @@ $usuarios = retornaUsuarios();
                                 
                                 <a href="#"><img id = "imgColaborador" src=' . $usuarios_sis->img . ' alt="" /> </td>
                                 
-                                <td><a>' . $usuarios_sis->nome_completo . '</a></td>
+                                <td>
+                                <form action="gestaoPonto.php" method="post"><button id="consultaPonto" name="consultaPonto" value="' . $usuarios_sis->id . '">' . $usuarios_sis->nome_completo . '</button></form>  
+                                </td>
+                                
                                 <td>' . $usuarios_sis->usuario . '</td>
                                 <td>' . $usuarios_sis->RA . '</td>
                                 <td>' . $usuarios_sis->semestre . '°</td>
@@ -116,10 +118,15 @@ $usuarios = retornaUsuarios();
 
                                     ?>
                                 </table>
+
+
+
                             </div>
+
                         </div>
                     </div>
                 </div>
+
 
                 <br>
             </div>
@@ -128,6 +135,9 @@ $usuarios = retornaUsuarios();
 
 
 <!-- SCRIPTS UTILIZADOS NO DASHBOARD !-->
+
+
+
 <script src="js/vendor/jquery-1.11.3.min.js"></script>
 
 <script src="js/bootstrap.min.js"></script>
@@ -165,6 +175,11 @@ $usuarios = retornaUsuarios();
 <script src="js/notification-active.js"></script>
 
 <script src="js/main.js"></script>
+
+<script src="js/meu_ajax/ajax.js"></script>
+<script src="js/marcacaoponto.js"></script>
+
+
 
 </body>
 
