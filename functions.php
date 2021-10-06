@@ -91,20 +91,99 @@ function registrarUsuario($nomeCompleto, $semestre, $registroAcademico, $email, 
     $stmt->execute();
 }
 
-function marcacaoPonto($id, $hora)
+function verificaPontoEntrada($id)
 {
+
+    $dia = date("Y-m-d");
     $PDO = db_connect();
-    $sql = "INSERT INTO marcacao_ponto (id_user, dia, hora) VALUES (:id, now(), :hora)";
+    $sql = "SELECT dia, entrada  FROM sistema.marcacao_ponto WHERE fk_id_user = :id  and dia = :dia";
     $stmt = $PDO->prepare($sql);
     $stmt->bindValue(':id', $id);
-    $stmt->bindValue(':hora', $hora);
+    $stmt->bindValue(':dia', $dia);
+    $stmt->execute();
+    $pontos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $dadosCodificados = json_encode($pontos);
+    $objData = json_decode($dadosCodificados);
+    return $objData;
+}
+
+
+function verificaPonto($id)
+{
+
+    $dia = date("Y-m-d");
+    $PDO = db_connect();
+    $sql = "SELECT dia, almoco, volta, entrada FROM sistema.marcacao_ponto WHERE fk_id_user = :id  and dia = :dia";
+    $stmt = $PDO->prepare($sql);
+    $stmt->bindValue(':id', $id);
+    $stmt->bindValue(':dia', $dia);
+    $stmt->execute();
+    $pontos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $dadosCodificados = json_encode($pontos);
+    $objData = json_decode($dadosCodificados);
+    //VERIFICA SE TEM ALGUMA MARCAÇÃO
+    if (empty($objData)) {
+        return 1;
+    } else {
+        foreach ($objData as $horario) {
+            if ($horario->almoco == null) {
+                return 2;
+            } elseif ($horario->volta == null) {
+                return 3;
+            } else {
+                return 4;
+            }
+        }
+    }
+}
+
+function horasTrabalhadasMensal($id)
+{
+    $PDO = db_connect();
+    $sql = "SELECT
+    dia, 
+    format(TIMESTAMPDIFF(minute,entrada, almoco)/60,2) as pPeriodo,
+    format(TIMESTAMPDIFF(minute,volta,saida)/60, 2) as  fPeriodo,
+    (SELECT fPeriodo+pPeriodo) as HorasTrabalhadasDia
+    from marcacao_ponto where fk_id_user = :id and month(dia) = month(current_date());";
+    $stmt = $PDO->prepare($sql);
+    $stmt->bindValue(':id', $id);
+    $stmt->execute();
+    $pontos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $dadosCodificados = json_encode($pontos);
+    $objData = json_decode($dadosCodificados);
+
+    return $objData;
+}
+
+
+function marcacaoPonto($id)
+{
+    $PDO = db_connect();
+    $dia = date("Y-m-d");
+
+    if (verificaPonto($id) == 1) {
+        $sql = "INSERT INTO marcacao_ponto (fk_id_user, dia, entrada) VALUES (:id, :dia, now());";
+    } elseif (verificaPonto($id) == 2) {
+        $sql = "UPDATE marcacao_ponto SET almoco = now() WHERE fk_id_user = :id AND dia = :dia";
+    } elseif (verificaPonto($id) == 3) {
+        $sql = "UPDATE marcacao_ponto  SET volta = now() WHERE fk_id_user = :id AND dia = :dia";
+    } else {
+        $sql = "UPDATE marcacao_ponto  SET saida = now() WHERE fk_id_user = :id AND dia = :dia";
+    }
+    $stmt = $PDO->prepare($sql);
+    $stmt->bindValue(':id', $id);
+    $stmt->bindValue(':dia', $dia);
     $stmt->execute();
 }
+
+
+
 
 function pontoMarcados($id)
 {
     $PDO = db_connect();
-    $sql = "SELECT dia, hora FROM sistema.marcacao_ponto WHERE id_user = :id ";
+    $sql = "SELECT dia, hora FROM sistema.marcacao_ponto WHERE fk_id_user = :id  and dia = '2021-09-29'";
     $stmt = $PDO->prepare($sql);
     $stmt->bindValue(':id', $id);
     $stmt->execute();
@@ -114,16 +193,6 @@ function pontoMarcados($id)
     return $objData;
 }
 
-// function que define o horario de funcionamento do sistema
-function podeEntrar($nivel)
-{
-    if ($nivel === 3) {
-        return true;
-    }
-    if (date('H:m', time()) < strtotime('16:00')) {
-        return 'Erro';
-    }
-}
 
 //LER TODOS OS USER DO BANCO
 function retornaUsuarios()
@@ -145,7 +214,7 @@ function retornaUsuarios()
 function retonaPontoPorId($id_user)
 {
     $PDO = db_connect();
-    $sql = "SELECT dia, hora FROM marcacao_ponto where id_user =  :id_user";
+    $sql = "SELECT dia, hora FROM marcacao_ponto where fk_id_user =  :id_user";
     $stmt = $PDO->prepare($sql);
     $stmt->bindValue(':id_user', $id_user);
     $stmt->execute();
@@ -168,11 +237,12 @@ function retonaInfoFuncionarioPorId($id_user)
     $objData = json_decode($dadosCodificados);
     return $objData;
 }
+
 function retonaInfoFuncionarioPorIdTEste($id_user)
 {
     $limit_linhas_por_pagina = 3;
     $PDO = db_connect();
-    $sql = "SELECT dia, hora FROM marcacao_ponto where id_user = :id_user";
+    $sql = "SELECT dia, hora FROM marcacao_ponto where fk_id_user = :id_user";
     $stmt = $PDO->prepare($sql);
     $stmt->bindValue(':id_user', $id_user);
     $stmt->execute();
@@ -190,7 +260,7 @@ function retonaInfoFuncionarioPorIdTEste($id_user)
 
     $start = ($page - 1) *  $limit_linhas_por_pagina;
 
-    $sql1 = "SELECT id, dia, hora FROM marcacao_ponto where id_user = 171 ORDER BY id DESC LIMIT $start, $limit_linhas_por_pagina";
+    $sql1 = "SELECT id, dia, hora FROM marcacao_ponto where fk_id_user = 171 ORDER BY id DESC LIMIT $start, $limit_linhas_por_pagina";
     $stmt1 = $PDO->prepare($sql1);
     $stmt1->bindValue(':id_user', $id_user);
     $stmt1->execute();
@@ -198,7 +268,7 @@ function retonaInfoFuncionarioPorIdTEste($id_user)
     $dadosCodificados1 = json_encode($resul_consulta1);
     $objData1 = json_decode($dadosCodificados1);
     $no = $page > 1 ? $start + 1 : 1;
-    
-    
+
+
     return array($objData, $objData1, $total_de_linhas, $total_de_linhas_por_pagina, $resul_consulta1, $no, $page);
 }

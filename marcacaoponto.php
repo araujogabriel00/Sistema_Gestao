@@ -46,6 +46,8 @@ $usuarios = retornaUsuarios();
 $pontos_marcados = pontoMarcados($id_user);
 
 
+
+
 ?>
 
 <!DOCTYPE html>
@@ -96,7 +98,7 @@ $pontos_marcados = pontoMarcados($id_user);
 
 
                             <div>
-                                <button type="submit" class="btn btn-primary" id="botaoponto">Marcar ponto</button>
+                                <button type="submit" class="btn btn-primary" id="botaoponto" value="<?= $id_user ?>">Marcar ponto</button>
                             </div>
                             <br>
 
@@ -152,43 +154,24 @@ $pontos_marcados = pontoMarcados($id_user);
 
 <!-- SCRIPTS UTILIZADOS NO DASHBOARD !-->
 <script src="js/vendor/jquery-1.11.3.min.js"></script>
-
 <script src="js/marcacaoponto.js"></script>
-
 <script src="js/bootstrap.min.js"></script>
-
 <script src="js/jquery.meanmenu.js"></script>
-
 <script src="js/counterup/jquery.counterup.min.js"></script>
-
 <script src="js/counterup/waypoints.min.js"></script>
-
 <script src="js/counterup/counterup-active.js"></script>
-
 <script src="js/sparkline/jquery.sparkline.min.js"></script>
-
 <script src="js/sparkline/sparkline-active.js"></script>
-
 <script src="js/chosen/chosen.jquery.js"></script>
-
 <script src="js/chosen/chosen-active.js"></script>
-
 <script src="js/preloader.js"></script>
-
 <script src="js/Lobibox.js"></script>
-
 <script src="js/vendor/jquery-1.11.3.min.js"></script>
-
 <script src="js/jquery.meanmenu.js"></script>
-
 <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
-
 <script src="js/jquery.sticky.js"></script>
-
 <script src="js/jquery.scrollUp.min.js"></script>
-
 <script src="js/notification-active.js"></script>
-
 <script src="js/main.js"></script>
 
 </body>

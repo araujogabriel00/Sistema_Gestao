@@ -5,32 +5,33 @@ function mostrarHora() {
     let hora = dia.getHours();
     let minutos = dia.getMinutes();
     let segundos = dia.getSeconds();
-    let formatoHora = convertaFormato(hora);
+    //let formatoHora = convertaFormato(hora);
     let hoje = String(dia.getDate()).padStart(2, '0');
     let mes = String(dia.getMonth() + 1).padStart(2, '0');
-    hora = verificaHora(hora);
+    /* hora = verificaHora(hora);
 
-    hora = addZero(hora);
+    hora = addZero(hora); */
     minutos = addZero(minutos);
     segundos = addZero(segundos);
 
 
-    document.getElementById('clock').innerHTML = `${hora}:${minutos}-${formatoHora}`;
+    document.getElementById('clock').innerHTML = `${hora}:${minutos}:${segundos}`;
 
     document.getElementById('data').innerHTML = `${hoje}/${mes}/${dia.getFullYear()}`;
-
-    return hora + ':' + minutos + ':' + formatoHora;
+    
+    
+    
 }
 
-function convertaFormato(time) {
+/* function convertaFormato(time) {
     let formato = "AM";
     if (time >= 12) {
         formato = "PM";
     }
     return formato;
 }
-
-function verificaHora(time) {
+ */
+/* function verificaHora(time) {
     if (time > 12) {
         time = time - 12;
     }
@@ -38,7 +39,7 @@ function verificaHora(time) {
         time = 12;
     }
     return time;
-}
+} */
 
 function addZero(time) {
     if (time < 10) {
@@ -52,16 +53,16 @@ setInterval(mostrarHora, 1000);
 
 //ENVIA INFORMAÇÕES DO PONTO PARA cadastraPonto.php POR MEIO DE POST
 $('#botaoponto').click(function () {
-    let hora = mostrarHora();
-    $.ajax({
+    var tempo = $('#botaoponto').val();
+    
+   $.ajax({
         url: "cadastraPonto.php", //Arquivo php
-        type: "post",
-        data: "mostrarHora=" + hora,
-
-        success: function (data) {			//Sucesso no AJAX
+        type: "post", //Método de envio
+        data: "valorBotao=" + tempo,
+        success: function (data) {			
             Lobibox.notify('success', {
                 title: 'Ponto cadastrado',
-                msg: mostrarHora(),
+                msg: tempo,
             });
 
         },

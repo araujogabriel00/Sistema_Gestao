@@ -61,6 +61,9 @@ $id__user_consulta_info = retonaInfoFuncionarioPorId($id_consulta);
 
 
 
+$horasTrabalhadasMensal = horasTrabalhadasMensal($id_user);
+$totalhorasTrabalhadasMensal = 0;
+
 
 
 
@@ -73,21 +76,25 @@ $id__user_consulta_info = retonaInfoFuncionarioPorId($id_consulta);
 
 <head>
     <link rel="stylesheet" href="css/Lobibox.min.css">
-
     <link rel="stylesheet" href="css/notifications.css">
-
+    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i,800" rel="stylesheet">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/adminpro-custon-icon.css">
+    <link rel="stylesheet" href="css/meanmenu.min.css">
+    <link rel="stylesheet" href="css/jquery.mCustomScrollbar.min.css">
+    <link rel="stylesheet" href="css/animate.css">
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/c3.min.css">
     <link rel="stylesheet" href="style.css">
-
+    <link rel="stylesheet" href="css/responsive.css">
 </head>
 
-<div class="content-inner-all">
-
-    <body class="materialdesign">
-
+<body class="materialdesign">
+    <div class="content-inner-all">
         <div class="income-order-visit-user-area">
-
             <div class="container-fluid">
-
                 <div class="row">
                     <br>
                     <!-- TABELA DE COLABORADORES!-->
@@ -100,153 +107,145 @@ $id__user_consulta_info = retonaInfoFuncionarioPorId($id_consulta);
                                             <div class="col-lg-6">
                                                 <div class="row">
                                                     <div class="col-lg-3">
-                                                        <?php
-                                                        foreach ($id__user_consulta_info as $info_funcionarios) {
-                                                            echo '<div class="user-profile-img">
-                                                            <img src="' . $info_funcionarios->img . '" alt="" />
-                                                        </div>
+                                                        <?php foreach ($id__user_consulta_info as $info_funcionarios) { ?>
+                                                            <div class="user-profile-img">
+                                                                <img src=<?= $info_funcionarios->img; ?> alt="" />
+                                                            </div>
                                                     </div>
                                                     <div class="col-lg-9">
                                                         <div class="user-profile-content">
-                                                        
-                                                                <h2>' . $info_funcionarios->nome_completo . '</h2>
-                                                            
+                                                            <h2><?= $info_funcionarios->nome_completo ?></h2>
                                                             <p class="profile-founder">
-                                                            <strong>' . strtoupper($info_funcionarios->tipo) . '</strong><br>
-                                                            <strong> RA: ' . strtoupper($info_funcionarios->RA) . '</strong><br>
-                                                            <strong> SEMESTRE: ' . strtoupper($info_funcionarios->semestre) . '°</strong>
+                                                                <strong><?= strtoupper($info_funcionarios->tipo) ?> </strong><br>
+                                                                <strong> RA: <?= strtoupper($info_funcionarios->RA) ?></strong><br>
+                                                                <strong> SEMESTRE: <?= strtoupper($info_funcionarios->semestre);
+                                                                                } ?>°</strong>
                                                             </p>
-                                                            
                                                         </div>
                                                     </div>
-                                                    </div>
-                                                </div>
-                                                ';
-                                                        }
-
-                                                        ?>
-                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <br>
-                                <div class="col-lg-12">
-                                    <div class="sparkline12-hd">
-                                        <div class="main-sparkline12-hd">
-                                            <h1> Marcações Realizadas <span class="badge">Total: <?= $id_user_ponto[2] ?></span></h1>
-                                            <div class="sparkline12-outline-icon">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="sparkline12-graph">
-                                        <div class="static-table-list">
-                                            <table class="table table-bordered" >
-                                            <input type="hidden" id="dados_tabela" value="'.$dia = $key->dia.'" onload="montarTabela()"></input>
-                                            <?php
-                                            
-                                                
-                                                $dia;
-                                                $hora;
-                                                foreach ($id_user_ponto[0] as $key) {
-                                                    $dia = $key->dia;
-                                                    echo'';
-                                                }
-                                                var_dump($dia)?>
-                                                
-                                                <thead >
-                                                    <tr>
-                                                        <th>Dia</th>
-                                                        <th>Hora</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <?php
-                                                    $pontos = $id_user_ponto[0];
-                                                    foreach ($pontos as $pontos_marcados) { ?>
-                                                        <tr>
-                                                            <td><?= $pontos_marcados->dia; ?></td>
-                                                            <td><?= $pontos_marcados->hora; ?></td>
-                                                            <?php
-                                                            /*
-                                                            $refPerson = $db->prepare("SELECT nome_completo FROM users where id=$result->id");
-                                                            $refPerson->execute();
-                                                            $refPerson = $refPerson->fetch(PDO::FETCH_OBJ); */
-                                                            ?>
-                                                        </tr>
-                                                    <?php $no = $id_user_ponto[5]++;
-                                                    } ?>
-                                                </tbody>
-                                            </table>
-                                            <ul class="pagination">
-                                                <li><a href="?page=1">Primeira</a></li>
-                                                <?php
-                                                $total_de_linhas_por_pagina = $id_user_ponto[3];
-                                                for ($pagina = 1; $pagina <= $total_de_linhas_por_pagina; $pagina++) { ?>
-
-                                                    <li class="<?= $page = $id_user_ponto[6]  == $pagina ? 'active' : ''; ?>">
-                                                        <a href="<?= '?page=' . $pagina; ?>"><?= $pagina; ?></a>
-                                                    </li>
-                                                <?php }  ?>
-                                                <li>
-                                                    <a href="?page=<?= $total_de_linhas_por_pagina ?>">Última</a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <br>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <br>
+                    <div class="col-lg-6">
+                        <div class="sparkline12-hd">
+                            <div class="main-sparkline12-hd">
+                                <h1> Marcações Realizadas
+                                    <span class="badge">Total: <?= $id_user_ponto[2] ?></span>
+                                </h1>
+                                <div class="sparkline12-outline-icon">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sparkline12-graph">
+                            <div class="static-table-list">
+                                <table class="table table-bordered">
+                                    <input type="hidden" id="dados_tabela" value="'.$dia = $key->dia.'" onload="montarTabela()"></input>
+                                    <?php
+                                    $dia;
+                                    $hora;
+                                    foreach ($id_user_ponto[0] as $key) {
+                                        $dia = $key->dia;
+                                        echo '';
+                                    }
+                                    ?>
+                                    <thead>
+                                        <tr>
+                                            <th>Dia</th>
+                                            <th>Hora</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        $pontos = $id_user_ponto[0];
+                                        foreach ($pontos as $pontos_marcados) { ?>
+                                            <tr>
+                                                <td><?= $pontos_marcados->dia; ?></td>
+                                                <td><?= $pontos_marcados->hora; ?></td>
+                                                <?php
+                                                /*
+                                                            $refPerson = $db->prepare("SELECT nome_completo FROM users where id=$result->id");
+                                                            $refPerson->execute();
+                                                            $refPerson = $refPerson->fetch(PDO::FETCH_OBJ); */
+                                                ?>
+                                            </tr>
+                                        <?php $no = $id_user_ponto[5]++;
+                                        } ?>
+                                    </tbody>
+                                </table>
+                                <ul class="pagination">
+                                    <li><a href="?page=1">Primeira</a></li>
+                                    <?php
+                                    $total_de_linhas_por_pagina = $id_user_ponto[3];
+                                    for ($pagina = 1; $pagina <= $total_de_linhas_por_pagina; $pagina++) { ?>
+
+                                        <li class="<?= $page = $id_user_ponto[6]  == $pagina ? 'active' : ''; ?>">
+                                            <a href="<?= '?page=' . $pagina; ?>"><?= $pagina; ?></a>
+                                        </li>
+                                    <?php }  ?>
+                                    <li>
+                                        <a href="?page=<?= $total_de_linhas_por_pagina ?>">Última</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="sparkline10-list shadow-reset">
+                            <div class="sparkline10-hd">
+                                <div class="main-sparkline10-hd">
+                                    <h1>Horas Trabalhadas: <span class="c3-ds-n">
+                                            <?php foreach (horasTrabalhadasMensal($id_user) as $key) {
+                                                $totalhorasTrabalhadasMensal += $key->HorasTrabalhadasDia;
+                                            }
+                                            echo $totalhorasTrabalhadasMensal;
+                                            ?>
+                                        </span></h1>
+                                        <button style="display: hidden;" id = "btHora"value="<?=$totalhorasTrabalhadasMensal?>"></button>
+                                    <div class="sparkline10-outline-icon"></div>
+                                </div>
+                            </div>
+                            <div class="sparkline10-graph">
+                                <div id="pie"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                <br>
             </div>
         </div>
+    </div>
 
-
-        <!-- SCRIPTS UTILIZADOS NO DASHBOARD !-->
-        <script src="js/vendor/jquery-1.11.3.min.js"></script>
-
-        <script src="js/marcacaoponto.js"></script>
-
-        <script src="js/bootstrap.min.js"></script>
-
-        <script src="js/jquery.meanmenu.js"></script>
-
-        <script src="js/counterup/jquery.counterup.min.js"></script>
-
-        <script src="js/counterup/waypoints.min.js"></script>
-
-        <script src="js/counterup/counterup-active.js"></script>
-
-        <script src="js/sparkline/jquery.sparkline.min.js"></script>
-
-        <script src="js/sparkline/sparkline-active.js"></script>
-
-        <script src="js/chosen/chosen.jquery.js"></script>
-
-        <script src="js/chosen/chosen-active.js"></script>
-
-        <script src="js/preloader.js"></script>
-
-        <script src="js/Lobibox.js"></script>
-
-        <script src="js/vendor/jquery-1.11.3.min.js"></script>
-
-        <script src="js/jquery.meanmenu.js"></script>
-
-        <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
-
-        <script src="js/jquery.sticky.js"></script>
-
-        <script src="js/jquery.scrollUp.min.js"></script>
-
-        <script src="js/notification-active.js"></script>
-
-        <script src="js/main.js"></script>
-
-
-    </body>
+    <!-- SCRIPTS UTILIZADOS NO DASHBOARD !-->
+    <script src="js/vendor/jquery-1.11.3.min.js"></script>
+    <script src="js/marcacaoponto.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.meanmenu.js"></script>
+    <script src="js/counterup/jquery.counterup.min.js"></script>
+    <script src="js/counterup/waypoints.min.js"></script>
+    <script src="js/counterup/counterup-active.js"></script>
+    <script src="js/sparkline/jquery.sparkline.min.js"></script>
+    <script src="js/sparkline/sparkline-active.js"></script>
+    <script src="js/chosen/chosen.jquery.js"></script>
+    <script src="js/chosen/chosen-active.js"></script>
+    <script src="js/preloader.js"></script>
+    <script src="js/Lobibox.js"></script>
+    <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="js/jquery.sticky.js"></script>
+    <script src="js/jquery.scrollUp.min.js"></script>
+    <script src="js/notification-active.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/c3-charts/d3.min.js"></script>
+    <script src="js/c3-charts/c3.min.js"></script>
+    <script src="js/c3-charts/c3-active.js"></script>
+    <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+    <script src="js/notification-active.js"></script>
+</body>
 
 </html>
