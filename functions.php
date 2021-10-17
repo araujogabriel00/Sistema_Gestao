@@ -178,27 +178,27 @@ function marcacaoPonto($id)
 }
 
 
-
-
-function pontoMarcados($id)
+function apiCalendario($dia)
 {
-    $PDO = db_connect();
-    $sql = "SELECT dia, hora FROM sistema.marcacao_ponto WHERE fk_id_user = :id  and dia = '2021-09-29'";
-    $stmt = $PDO->prepare($sql);
-    $stmt->bindValue(':id', $id);
-    $stmt->execute();
-    $pontos = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    $dadosCodificados = json_encode($pontos);
-    $objData = json_decode($dadosCodificados);
-    return $objData;
+    $url = "https://api.calendario.com.br/
+        ?json=true&ano=2021&ibge=5300108&token=Z2FicmllbC5hcmF1am9zQHNlbXByZWNldWIuY29tJmhhc2g9MTQ4OTcxNzA1";
+    $resultado = json_decode(file_get_contents($url));
+    $eFeriado = null;
+    foreach ($resultado as $feriados) {
+        if ($feriados->date == $dia) {
+            $eFeriado = true;
+        }
+    }
+    return $eFeriado;
 }
-
 
 //LER TODOS OS USER DO BANCO
 function retornaUsuarios()
 {
     $PDO = db_connect();
-    $sql = "SELECT id,nome_completo,RA,semestre, usuario, img FROM sistema.users order by nome_completo ASC;";
+    $sql = "SELECT id,nome_completo,RA,semestre, usuario, img 
+    FROM sistema.users 
+    order by nome_completo ASC;";
     $stmt = $PDO->prepare($sql);
     $stmt->execute();
     $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -211,17 +211,82 @@ function retornaUsuarios()
     return $objData;
 }
 
-function retonaPontoPorId($id_user)
+function retonaPontoPorId($id_user, $inicio, $qnt_result_pg)
 {
     $PDO = db_connect();
-    $sql = "SELECT dia, hora FROM marcacao_ponto where fk_id_user =  :id_user";
+    $sql =
+        "SELECT 
+        dia, entrada, almoco, volta, saida 
+    FROM sistema.marcacao_ponto 
+        where fk_id_user = :id_user
+        and month(dia) = month(current_date()) 
+        ORDER BY id ASC LIMIT $inicio, $qnt_result_pg";
     $stmt = $PDO->prepare($sql);
     $stmt->bindValue(':id_user', $id_user);
     $stmt->execute();
     $user = $stmt->fetchAll(PDO::FETCH_ASSOC);
     $dadosCodificados = json_encode($user);
-    $objData = json_decode($dadosCodificados);
-    return $objData;
+    $dadosUsuario = json_decode($dadosCodificados);
+    return $dadosUsuario;
+}
+
+function motivoReprovacao($dia, $motivo, $userQueReprovou, $userQueTeveOPontoReprovado)
+{
+    $PDO = db_connect();
+    $sql =
+        "INSERT INTO sistema.folhasreprovadas
+        (gestor,colaborador,dia,motivo,mes)
+    VALUES 
+        (:gestor,:colaborador,:dia,:motivo,month(current_date()));";
+    $stmt = $PDO->prepare($sql);
+    $stmt->bindValue(':gestor', $userQueReprovou);
+    $stmt->bindValue(':colaborador', $userQueTeveOPontoReprovado);
+    $stmt->bindValue(':dia', $dia);
+    $stmt->bindValue(':motivo', $motivo);
+    $stmt->execute();
+}
+
+function retonaPontoPorIdFuncionario($id_user)
+{
+    $PDO = db_connect();
+    $sql = "SELECT dia, entrada, almoco, volta, saida FROM sistema.marcacao_ponto where fk_id_user = :id_user
+    and month(dia) = month(current_date());";
+    $stmt = $PDO->prepare($sql);
+    $stmt->bindValue(':id_user', $id_user);
+    $stmt->execute();
+    $user = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $dadosCodificados = json_encode($user);
+    $dadosUsuario = json_decode($dadosCodificados);
+    return $dadosUsuario;
+}
+
+
+function retonaPontoPorIdFuncionarioMes($id_user, $mes)
+{
+    $PDO = db_connect();
+    $sql = "SELECT dia, entrada, almoco, volta, saida FROM sistema.marcacao_ponto where fk_id_user = :id_user
+    and month(dia) = :mes;";
+    $stmt = $PDO->prepare($sql);
+    $stmt->bindValue(':id_user', $id_user);
+    $stmt->bindValue(':mes', $mes);
+    $stmt->execute();
+    $user = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $dadosCodificados = json_encode($user);
+    $dadosUsuario = json_decode($dadosCodificados);
+    return $dadosUsuario;
+}
+
+function retonaQtdLinhaPontoPorId($id_user)
+{
+    $PDO = db_connect();
+    $sql = "SELECT count(fk_id_user) as qtd FROM sistema.marcacao_ponto where fk_id_user = :id_user";
+    $stmt = $PDO->prepare($sql);
+    $stmt->bindValue(':id_user', $id_user);
+    $stmt->execute();
+    $user = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $dadosCodificados = json_encode($user);
+    $qtdLinhas = json_decode($dadosCodificados);
+    return $qtdLinhas;
 }
 
 
@@ -236,39 +301,4 @@ function retonaInfoFuncionarioPorId($id_user)
     $dadosCodificados = json_encode($user);
     $objData = json_decode($dadosCodificados);
     return $objData;
-}
-
-function retonaInfoFuncionarioPorIdTEste($id_user)
-{
-    $limit_linhas_por_pagina = 3;
-    $PDO = db_connect();
-    $sql = "SELECT dia, hora FROM marcacao_ponto where fk_id_user = :id_user";
-    $stmt = $PDO->prepare($sql);
-    $stmt->bindValue(':id_user', $id_user);
-    $stmt->execute();
-    $resul_consulta = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    $dadosCodificados = json_encode($resul_consulta);
-    $objData = json_decode($dadosCodificados);
-    $total_de_linhas = $stmt->rowCount();
-    $total_de_linhas_por_pagina = ceil($total_de_linhas / $limit_linhas_por_pagina);
-
-    if (!isset($_GET['page'])) {
-        $page = 1;
-    } else {
-        $page = $_GET['page'];
-    }
-
-    $start = ($page - 1) *  $limit_linhas_por_pagina;
-
-    $sql1 = "SELECT id, dia, hora FROM marcacao_ponto where fk_id_user = 171 ORDER BY id DESC LIMIT $start, $limit_linhas_por_pagina";
-    $stmt1 = $PDO->prepare($sql1);
-    $stmt1->bindValue(':id_user', $id_user);
-    $stmt1->execute();
-    $resul_consulta1 =  $stmt->fetchAll(PDO::FETCH_ASSOC);
-    $dadosCodificados1 = json_encode($resul_consulta1);
-    $objData1 = json_decode($dadosCodificados1);
-    $no = $page > 1 ? $start + 1 : 1;
-
-
-    return array($objData, $objData1, $total_de_linhas, $total_de_linhas_por_pagina, $resul_consulta1, $no, $page);
 }

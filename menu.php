@@ -61,7 +61,7 @@ foreach ($users as $u) {
     <div class="left-sidebar-pro">
         <nav id="sidebar">
             <div class="sidebar-header">
-                <a href="index.php"><?php echo '<img src="' . $imgMenu . '" alt=""/' ?></a>
+                <a href="#"><?php echo '<img src="' . $imgMenu . '" alt=""/' ?></a>
                 <h3 class="admin-name"><?php echo $nomeMenu ?></h3>
                 <p><?php echo  strtoupper($tipoMenu) ?></p>
                 <strong><?php echo $abreviacaoMenu ?></strong>

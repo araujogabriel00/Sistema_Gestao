@@ -19,8 +19,8 @@ if (time() >= $_SESSION['logout_time']) {
 
     header("location:logout.php");
 }
-
 include './menu.php';
+
 
 
 //VARIAVEIS DE SESSAO
@@ -42,12 +42,8 @@ $id_user = $_SESSION['user_id'];
 
 //CHAMADA DE FUNÇÃO QUE IRÁ RETORNA OS USUARIOS DO BANCO DE DADOS
 $usuarios = retornaUsuarios();
-
-$pontos_marcados = pontoMarcados($id_user);
-
-
-
-
+$date = date("d/m/Y");
+$calendario = apiCalendario($date);
 ?>
 
 <!DOCTYPE html>
@@ -63,12 +59,9 @@ $pontos_marcados = pontoMarcados($id_user);
 
 </head>
 
-<div class="content-inner-all">
-
-    <body class="materialdesign">
-
+<body class="materialdesign">
+    <div class="content-inner-all">
         <div class="income-order-visit-user-area">
-
             <div class="container-fluid">
 
                 <div class="row">
@@ -84,7 +77,7 @@ $pontos_marcados = pontoMarcados($id_user);
                         </div>
                         <div class="sparkline12-graph">
                             <div class="static-table-list">
-                                <h1></h1>
+
                             </div>
 
                             <div>
@@ -93,86 +86,56 @@ $pontos_marcados = pontoMarcados($id_user);
 
                             <div>
                                 <span id='data'> </span>
-
                             </div>
-
-
                             <div>
-                                <button type="submit" class="btn btn-primary" id="botaoponto" value="<?= $id_user ?>">Marcar ponto</button>
+                                <?php
+                                if ($calendario == null) {
+                                    echo '<button type="submit" class="btn btn-primary" id="botaoponto" value="' . $id_user . '">Marcar ponto</button>';
+                                } else {
+                                    echo '<strong>Hoje é feriado</strong>';
+                                }
+                                ?>
                             </div>
                             <br>
-
-
                         </div>
                     </div>
-
-
                     <div class="col-lg-12">
                         <br>
                         <div class="sparkline12-hd">
                             <div class="main-sparkline12-hd">
                                 <h1>Marcações Realizadas</h1>
-                                <div class="sparkline12-outline-icon">
-                                </div>
                             </div>
                         </div>
-                        <div class="sparkline12-graph">
-                            <div class="static-table-list">
-                                <table class="table sparkle-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Dia</th>
-                                            <th>Hora</th>
-
-                                        </tr>
-                                    </thead>
-                                    <?php
-                                    //LER OS DADOS PRESENTES NO BANCO DE DADOS
-                                    foreach ($pontos_marcados as $ponto) {
-                                        echo '
-                                <tr>
-                                <td>' . $ponto->dia . '</td>
-                                <td>' . $ponto->hora . '</td>
-                                
-
-                              </tr>   
-                                    
-                                ';
-                                    }
-
-                                    ?>
-                                </table>
-                            </div>
-                        </div>
+                        <span id="conteudo"></span>
                     </div>
                 </div>
                 <br>
             </div>
         </div>
-</div>
+    </div>
 
 
-<!-- SCRIPTS UTILIZADOS NO DASHBOARD !-->
-<script src="js/vendor/jquery-1.11.3.min.js"></script>
-<script src="js/marcacaoponto.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/jquery.meanmenu.js"></script>
-<script src="js/counterup/jquery.counterup.min.js"></script>
-<script src="js/counterup/waypoints.min.js"></script>
-<script src="js/counterup/counterup-active.js"></script>
-<script src="js/sparkline/jquery.sparkline.min.js"></script>
-<script src="js/sparkline/sparkline-active.js"></script>
-<script src="js/chosen/chosen.jquery.js"></script>
-<script src="js/chosen/chosen-active.js"></script>
-<script src="js/preloader.js"></script>
-<script src="js/Lobibox.js"></script>
-<script src="js/vendor/jquery-1.11.3.min.js"></script>
-<script src="js/jquery.meanmenu.js"></script>
-<script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
-<script src="js/jquery.sticky.js"></script>
-<script src="js/jquery.scrollUp.min.js"></script>
-<script src="js/notification-active.js"></script>
-<script src="js/main.js"></script>
+    <!-- SCRIPTS UTILIZADOS NO DASHBOARD !-->
+    <script src="js/vendor/jquery-1.11.3.min.js"></script>
+    <script src="js/marcacaoponto.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.meanmenu.js"></script>
+    <script src="js/counterup/jquery.counterup.min.js"></script>
+    <script src="js/counterup/waypoints.min.js"></script>
+    <script src="js/counterup/counterup-active.js"></script>
+    <script src="js/sparkline/jquery.sparkline.min.js"></script>
+    <script src="js/sparkline/sparkline-active.js"></script>
+    <script src="js/chosen/chosen.jquery.js"></script>
+    <script src="js/chosen/chosen-active.js"></script>
+    <script src="js/preloader.js"></script>
+    <script src="js/Lobibox.js"></script>
+    <script src="js/vendor/jquery-1.11.3.min.js"></script>
+    <script src="js/jquery.meanmenu.js"></script>
+    <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="js/jquery.sticky.js"></script>
+    <script src="js/jquery.scrollUp.min.js"></script>
+    <script src="js/notification-active.js"></script>
+    <script src="js/main.js"></script>
 
 </body>
 

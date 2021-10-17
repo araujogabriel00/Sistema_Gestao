@@ -56,8 +56,13 @@ if (count($users) <= 0) {
     session_regenerate_id(true); //zerando o id da sessão
     sessaoLogin($user['id'], session_id()); // gravando login
 
-    ///CARREGA A PAGINA INICIAL
-    header('Location: index.php');
+
+    if ($_SESSION['nivel'] != 1) {
+        header('Location: marcacaoponto.php');
+    }else{
+        header('Location: listaFucionarios.php');
+    }
+    
 }
 
 

@@ -8,7 +8,9 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
 
-
+if ($_SESSION['nivel'] != 1) {
+    header('Location: index.php');
+}
 require 'check.php';
 
 require_once 'init.php';
@@ -126,8 +128,6 @@ $usuarios = retornaUsuarios();
                         </div>
                     </div>
                 </div>
-
-
                 <br>
             </div>
         </div>
@@ -177,10 +177,8 @@ $usuarios = retornaUsuarios();
 <script src="js/main.js"></script>
 
 <script src="js/meu_ajax/ajax.js"></script>
+
 <script src="js/marcacaoponto.js"></script>
-
-
-
 </body>
 
 </html>

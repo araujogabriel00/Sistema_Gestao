@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit2912cc758f4197adb2c4c2c0db632227
+class ComposerStaticInit3cb9a2ca5254e90987d0671a8dd0b4cf
 {
     public static $files = array (
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
@@ -48,22 +48,16 @@ class ComposerStaticInit2912cc758f4197adb2c4c2c0db632227
         ),
     );
 
-    public static $prefixesPsr0 = array (
-        'S' => 
-        array (
-            'Smalot\\PdfParser\\' => 
-            array (
-                0 => __DIR__ . '/..' . '/smalot/pdfparser/src',
-            ),
-        ),
+    public static $classMap = array (
+        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit2912cc758f4197adb2c4c2c0db632227::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit2912cc758f4197adb2c4c2c0db632227::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit2912cc758f4197adb2c4c2c0db632227::$prefixesPsr0;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit3cb9a2ca5254e90987d0671a8dd0b4cf::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit3cb9a2ca5254e90987d0671a8dd0b4cf::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit3cb9a2ca5254e90987d0671a8dd0b4cf::$classMap;
 
         }, null, ClassLoader::class);
     }
